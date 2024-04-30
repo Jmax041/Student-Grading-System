@@ -4,12 +4,17 @@
  */
 package final_project;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -339,6 +344,44 @@ public class update_Grade2 extends javax.swing.JFrame {
         newGradeText.setText("");
     }
     
+    private String transDate;
+    private String transTime;
+    
+    private void getDate(){
+        
+        Date d= new Date();
+        SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+        transDate = sdf.format(d);
+    }
+    
+    private void getTime(){
+        
+        Date t= new Date();
+        SimpleDateFormat sdf =  new SimpleDateFormat("hh:mm:ss a");
+        transTime = sdf.format(t);
+    }
+    
+    public void print(){
+        
+        try{
+        PrintStream text = new PrintStream(new File("Updated Student Report.txt"));
+        System.setOut(text);
+        
+        text.print("Teacher's Email: " + myEmail);
+        text.print("\nStudent Name: " + name.getText());
+        text.print("\nPrevious Grade: " + grade.getText());
+        text.print("\nUpdated Grade: " + newGradeText.getText());
+        text.print("\nDate Updated: " + transDate);
+        text.print("\nTime Updated: " + transTime);
+        }
+        
+        catch(FileNotFoundException fx){
+            
+            System.out.print(fx);
+        }
+        
+    }
+    
     private void headerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_headerMouseClicked
@@ -476,6 +519,9 @@ public class update_Grade2 extends javax.swing.JFrame {
                 
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Student grade updated successfully!");
+                getDate();
+                getTime();
+                print();
                 con.close();
                 clearText();
                 
