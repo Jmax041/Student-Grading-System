@@ -4,12 +4,17 @@
  */
 package final_project;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -339,6 +344,43 @@ public class add_Student extends javax.swing.JFrame {
         }
     }
     
+    private String transDate;
+    private String transTime;
+    
+    private void getDate(){
+        
+        Date d= new Date();
+        SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+        transDate = sdf.format(d);
+    }
+    
+    private void getTime(){
+        
+        Date t= new Date();
+        SimpleDateFormat sdf =  new SimpleDateFormat("hh:mm:ss a");
+        transTime = sdf.format(t);
+    }
+    
+    public void print(){
+        
+        try{
+        PrintStream text = new PrintStream(new File("New Student Report.txt"));
+        System.setOut(text);
+        
+        text.print("Teacher's Email: " + myEmail);
+        text.print("\nNew Student Name: " + nameText.getText());
+        text.print("\nGrade: " + gradeText.getText());
+        text.print("\nDate Added: " + transDate);
+        text.print("\nTime Added: " + transTime);
+        }
+        
+        catch(FileNotFoundException fx){
+            
+            System.out.print(fx);
+        }
+        
+    }
+    
     private void headerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_headerMouseClicked
@@ -488,6 +530,9 @@ public class add_Student extends javax.swing.JFrame {
                 
                 add.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Student added successfully!");
+                getDate();
+                getTime();
+                print();
                 con.close();
                 clearText();
                 
