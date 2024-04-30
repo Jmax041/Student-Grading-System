@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -52,6 +54,7 @@ public class view_Grade extends javax.swing.JFrame {
         reportTable = new javax.swing.JTable();
         sortGradeButton = new javax.swing.JButton();
         sortNameButton = new javax.swing.JButton();
+        printButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Student Grading System");
@@ -251,23 +254,29 @@ public class view_Grade extends javax.swing.JFrame {
             }
         });
 
+        printButton.setText("Print");
+        printButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(updateGradeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
-                    .addComponent(reportPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(sortGradeButton)))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sortGradeButton)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(mainPanelLayout.createSequentialGroup()
+                            .addComponent(sortNameButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(printButton))
+                        .addComponent(updateGradeLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+                        .addComponent(reportPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(sortNameButton)
-                .addGap(142, 142, 142))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,7 +288,9 @@ public class view_Grade extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sortGradeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sortNameButton)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sortNameButton)
+                    .addComponent(printButton))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
@@ -414,6 +425,24 @@ public class view_Grade extends javax.swing.JFrame {
             return status;
         }
     }
+    
+    private void print(){
+        
+        MessageFormat header = new MessageFormat("Student Report");
+        MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+        
+        try{
+            
+            reportTable.print(JTable.PrintMode.NORMAL, header, footer);
+        }
+        
+        catch(Exception e){
+            
+            JOptionPane.showMessageDialog(this, e);
+        }
+
+    }
+    
     
     // SORTING METHODS
     
@@ -637,6 +666,10 @@ public class view_Grade extends javax.swing.JFrame {
         sortTableByNameAscending();
     }//GEN-LAST:event_sortNameButtonActionPerformed
 
+    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
+        print();
+    }//GEN-LAST:event_printButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -683,6 +716,7 @@ public class view_Grade extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel menuHeader;
     private javax.swing.JPanel menuPanel;
+    private javax.swing.JButton printButton;
     private javax.swing.JButton report;
     private javax.swing.JScrollPane reportPane;
     private javax.swing.JTable reportTable;
