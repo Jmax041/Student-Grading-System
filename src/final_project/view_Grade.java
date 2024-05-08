@@ -473,7 +473,15 @@ public class view_Grade extends javax.swing.JFrame {
 
     private static void quickSortByGradeDescending(ArrayList<Student> studentList, int low, int high) {
         if (low < high) {
-            int pivotIndex = partitionByGrade(studentList, low, high);
+            // Median-of-three pivot selection
+            int mid = low + (high - low) / 2;
+            int pivotIndex = medianOfThree(studentList, low, mid, high);
+            // Swap pivot element with the last element to perform partitioning
+            Student temp = studentList.get(pivotIndex);
+            studentList.set(pivotIndex, studentList.get(high));
+            studentList.set(high, temp);
+
+            pivotIndex = partitionByGrade(studentList, low, high);
             quickSortByGradeDescending(studentList, low, pivotIndex - 1);
             quickSortByGradeDescending(studentList, pivotIndex + 1, high);
         }
@@ -497,6 +505,15 @@ public class view_Grade extends javax.swing.JFrame {
         studentList.set(high, temp);
 
         return i + 1;
+    }
+    
+    private static int medianOfThree(ArrayList<Student> studentList, int low, int mid, int high) {
+        int a = studentList.get(low).getGrade();
+        int b = studentList.get(mid).getGrade();
+        int c = studentList.get(high).getGrade();
+        if ((a - b) * (c - a) >= 0) return low;
+        else if ((b - a) * (c - b) >= 0) return mid;
+        else return high;
     }
     
     // Sort by name (A to Z)
@@ -526,7 +543,15 @@ public class view_Grade extends javax.swing.JFrame {
 
     private static void quickSortByNameAscending(ArrayList<Student> studentList, int low, int high) {
         if (low < high) {
-            int pivotIndex = partitionByName(studentList, low, high);
+            // Median-of-three pivot selection
+            int mid = low + (high - low) / 2;
+            int pivotIndex = medianOfThree(studentList, low, mid, high);
+            // Swap pivot element with the last element to perform partitioning
+            Student temp = studentList.get(pivotIndex);
+            studentList.set(pivotIndex, studentList.get(high));
+            studentList.set(high, temp);
+            
+            pivotIndex = partitionByName(studentList, low, high);
             quickSortByNameAscending(studentList, low, pivotIndex - 1);
             quickSortByNameAscending(studentList, pivotIndex + 1, high);
         }
